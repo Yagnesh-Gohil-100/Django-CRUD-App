@@ -6,12 +6,12 @@
 # http://127.0.0.1:8000/  surver runs on this
 
 import mysql.connector
-from config import MYSQL_PASSWORD
+from config import DB_CONFIG
 
 dataBase = mysql.connector.connect(
   host = 'localhost',
   user = 'root',
-  passwd = 'MYSQL_PASSWORD'
+  passwd = DB_CONFIG['password']
 )
 
 # prepare a cursor object
