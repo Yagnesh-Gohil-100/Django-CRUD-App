@@ -9,7 +9,7 @@ class SignUpForm(UserCreationForm):
 
   class Meta:
       model = User
-      fields = ('username', 'first_name', 'last_name', 'email', 'password', 'confirm_password')
+      fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
   def __init__(self, *args, **kwargs):
     super(SignUpForm, self).__init__(*args, **kwargs)
@@ -19,12 +19,12 @@ class SignUpForm(UserCreationForm):
     self.fields['username'].label = ''
     self.fields['username'].help_text = '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
 
-    self.fields['password'].widget.attrs['class'] = 'form-control'
-    self.fields['password'].widget.attrs['placeholder'] = 'Password'
-    self.fields['password'].label = ''
-    self.fields['password'].help_text = '<ul class="form-text text-muted small"><li>Your password can\'t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can\'t be a commonly used password.</li><li>Your password can\'t be entirely numeric.</li></ul>'
+    self.fields['password1'].widget.attrs['class'] = 'form-control'
+    self.fields['password1'].widget.attrs['placeholder'] = 'Password'
+    self.fields['password1'].label = ''
+    self.fields['password1'].help_text = '<ul class="form-text text-muted small"><li>Your password can\'t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can\'t be a commonly used password.</li><li>Your password can\'t be entirely numeric.</li></ul>'
 
-    self.fields['confirm_password'].widget.attrs['class'] = 'form-control'
-    self.fields['confirm_password'].widget.attrs['placeholder'] = 'Confirm Password'
-    self.fields['confirm_password'].label = ''
-    self.fields['confirm_password'].help_text = '<span class="form-text text-muted"><small>Your password does not match the above password, Please enter the same password</small></span>'
+    self.fields['password2'].widget.attrs['class'] = 'form-control'
+    self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'
+    self.fields['password2'].label = ''
+    self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as above to verify.</small></span>'
