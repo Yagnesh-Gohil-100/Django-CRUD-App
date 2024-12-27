@@ -4,43 +4,137 @@
 
 {% if user.is_authenticated %}
 
-<h3>Registered users' data</h3>
+<div class="container mt-5">
+    <!-- Search Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <input 
+          type="text" 
+          class="form-control w-50" 
+          placeholder="Search by Name or Email" 
+          id="searchInput"
+          style="border-radius: 20px; padding: 8px 15px;"
+      >
+      <div class="d-flex">
+        <button 
+            class="btn btn-sm btn-outline-primary px-4 py-2" 
+            onclick="searchRecords()"
+            style="border-radius: 20px; font-weight: 500;"
+        >
+            <i class="bi bi-search"></i> Search
+        </button>
+        <button 
+            class="btn btn-sm btn-outline-secondary px-4 py-2 ms-2" 
+            onclick="clearSearch()"
+            style="border-radius: 20px; font-weight: 500;"
+        >
+            <i class="bi bi-x-circle"></i> Clear
+        </button>
+    </div>
+  </div>
+    
+    <!-- Responsive Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">City</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Zipcode</th>
+                    <th scope="col">Created At</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+                {% if records %}
+                    {% for record in records %}
+                        <tr>
+                            <td><a href="{% url 'individual_record' record.id %}" class="text-decoration-none">{{ record.id }}</a></td>
+                            <td>{{ record.first_name }} {{ record.last_name }}</td>
+                            <td>{{ record.email }}</td>
+                            <td>{{ record.phone }}</td>
+                            <td>{{ record.city }}</td>
+                            <td>{{ record.state }}</td>
+                            <td>{{ record.address }}</td>
+                            <td>{{ record.zipcode }}</td>
+                            <td>{{ record.created_at }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted">No records found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<table class="table table-bordered table-striped table-hover">
-  <thead class="table-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Phone</th>
-      <th scope="col">City</th>
-      <th scope="col">State</th>
-      <th scope="col">Address</th>
-      <th scope="col">Zipcode</th>
-      <th scope="col">Created At</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% if records %}
-        {% for record in records %}
-            <tr>
-            <td>{{ record.id }}</td>
-            <td>{{ record.first_name }} {{ record.last_name }}</td>
-            <td>{{ record.email }}</td>
-            <td>{{ record.phone }}</td>
-            <td>{{ record.city }}</td>
-            <td>{{ record.state }}</td>
-            <td>{{ record.address }}</td>
-            <td>{{ record.zipcode }}</td>
-            <td>{{ record.created_at }}</td>
-            </tr>
-        {% endfor %}
-    {% endif %}
-  </tbody>
-</table>
+<!-- Inline Search Script -->
+<script>
+    function searchRecords() {
+        const input = document.getElementById("searchInput").value.toLowerCase();
+        const rows = document.querySelectorAll("#dataTable tr");
+        
+        rows.forEach(row => {
+            const name = row.cells[1]?.innerText.toLowerCase();
+            const email = row.cells[2]?.innerText.toLowerCase();
+            if (name.includes(input) || email.includes(input)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    // Function to clear the search input
+    function clearSearch() {
+        let val = document.getElementById('searchInput').value;
+        if (val !== ''){
+          document.getElementById('searchInput').value = '';
+          window.location.href = '{% url "home" %}';  // Redirect to home page
+        }
+    }
+</script>
+
+<style>
+    .table {
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+    .table-responsive {
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #searchInput:focus {
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        border-color: #007bff;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+    .d-flex {
+        gap: 10px; /* Adds a small gap between buttons */
+    }
+</style>
 
 {% else %}
 
+<div class="col-md-6 offset-md-3">
 <h1>Login</h1>
 <br>
 
@@ -57,6 +151,8 @@
     <button type="submit" class="btn btn-secondary">Login</button>
 
 </form>
+
+</div>
 
 {% endif %}
 
